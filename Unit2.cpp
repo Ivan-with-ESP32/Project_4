@@ -1,20 +1,45 @@
 #include <vcl.h>
 #pragma hdrstop
+
 #include "Unit2.h"
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 
 TForm2 *Form2;
 
-//  ÓÌÒÚÛÍÚÓ ÙÓÏË
 __fastcall TForm2::TForm2(TComponent* Owner)
     : TForm(Owner)
 {
 }
 
-// Œ·Ó·ÌËÍ ÍÎ≥ÍÛ Ì‡ ÍÌÓÔÍÛ
-void __fastcall TForm2::Button1Click(TObject *Sender)
+void __fastcall TForm2::ButtonConvertClick(TObject *Sender)
 {
-    ShowMessage(L"œË‚≥Ú, Ò‚≥Ú!");
+    try
+    {
+        double amount = StrToFloat(EditAmount->Text);
+		double rateUSDToUAH = 41.2; 
+        double rateUAHToUSD = 0.0243;
+        double result = 0.0;
+
+        if (RadioUSDToUAH->Checked)
+            result = amount * rateUSDToUAH; 
+        else if (RadioUAHToUSD->Checked)
+            result = amount * rateUAHToUSD; 
+        else
+        {
+            ShowMessage(L"–ë—É–¥—å –ª–∞—Å–∫–∞, –≤–∏–±–µ—Ä—ñ—Ç—å –Ω–∞–ø—Ä—è–º–æ–∫ –∫–æ–Ω–≤–µ—Ä—Ç–∞—Ü—ñ—ó!");
+            return;
+        }
+
+        LabelResult->Caption = L"–†–µ–∑—É–ª—å—Ç–∞—Ç: " + FloatToStrF(result, ffFixed, 8, 2);
+    }
+    catch (...)
+    {
+        ShowMessage(L"–ë—É–¥—å –ª–∞—Å–∫–∞, –≤–≤–µ–¥—ñ—Ç—å –ø—Ä–∞–≤–∏–ª—å–Ω—É —Å—É–º—É!");
+    }
 }
 
+void __fastcall TForm2::ButtonCloseClick(TObject *Sender)
+{
+    Close(); 
+}
